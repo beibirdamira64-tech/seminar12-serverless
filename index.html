@@ -3,213 +3,191 @@
 <html lang="kk">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EduSchedule | Сабақ кестесі</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EduSchedule</title>
 <style>
 * { box-sizing: border-box; }
-
 body {
   margin: 0;
   font-family: 'Segoe UI', Arial, sans-serif;
-  background: linear-gradient(135deg, #0f172a, #312e81, #2563eb);
-  min-height: 100vh;
+  background: linear-gradient(135deg,#0f172a,#3730a3);
   color: white;
+  min-height: 100vh;
 }
-
-header {
-  padding: 24px 8%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.logo {
-  font-size: 25px;
-  font-weight: bold;
-}
-
-.tag {
-  background: #ffffff20;
-  padding: 10px 17px;
-  border-radius: 25px;
-}
-
-.container {
-  max-width: 550px;
-  margin: 35px auto;
+main {
+  max-width: 650px;
+  margin: 55px auto;
   padding: 20px;
 }
-
-h1 {
-  text-align: center;
-  font-size: 37px;
-  margin-bottom: 10px;
-}
-
+h1 { text-align: center; }
 .subtitle {
   text-align: center;
   color: #cbd5e1;
-  margin-bottom: 30px;
 }
-
 .card {
   background: white;
   color: #1e293b;
-  border-radius: 24px;
-  padding: 32px;
-  box-shadow: 0 20px 60px #0004;
-}
-
-label {
-  display: block;
-  margin: 18px 0 8px;
-  font-weight: 600;
-}
-
-input, select {
-  width: 100%;
-  padding: 14px;
-  border: 1px solid #cbd5e1;
-  border-radius: 12px;
-  font-size: 16px;
-  background: #f8fafc;
-}
-
-button {
-  width: 100%;
-  padding: 16px;
+  padding: 30px;
+  border-radius: 22px;
+  box-shadow: 0 15px 40px #0004;
   margin-top: 25px;
-  border: none;
-  border-radius: 12px;
-  background: linear-gradient(90deg, #4f46e5, #2563eb);
-  color: white;
-  font-size: 17px;
-  font-weight: bold;
-  cursor: pointer;
 }
-
-button:hover {
-  opacity: .9;
-  transform: translateY(-2px);
-}
-
-.result {
-  display: none;
-  margin-top: 22px;
+.notification {
   background: #eef2ff;
-  border-left: 5px solid #4f46e5;
+  border-left: 5px solid #6366f1;
+  padding: 20px;
   border-radius: 12px;
-  padding: 18px;
   line-height: 1.7;
 }
-
-.error {
-  color: #b91c1c;
+button {
+  background: #4f46e5;
+  color: white;
+  border: none;
+  padding: 15px;
+  width: 100%;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 20px;
 }
-
+button:hover { background: #3730a3; }
+#schedule { display: none; }
+.day {
+  background: #f8fafc;
+  padding: 15px;
+  border-radius: 12px;
+  margin: 15px 0;
+}
+.lesson {
+  border-bottom: 1px solid #e2e8f0;
+  padding: 12px 0;
+}
+.lesson:last-child { border: 0; }
+.time {
+  color: #4f46e5;
+  font-weight: bold;
+}
 footer {
   text-align: center;
-  padding: 30px;
   color: #cbd5e1;
+  padding: 25px;
 }
 </style>
 </head>
-
 <body>
-<header>
-  <div class="logo">🎓 EduSchedule</div>
-  <div class="tag">Student Portal</div>
-</header>
+<main>
+<h1>🎓 EduSchedule</h1>
+<p class="subtitle">Студенттердің сабақ кестесі</p>
 
-<div class="container">
-  <h1>📚 Сабақ кестесі</h1>
-  <p class="subtitle">
-    Студенттерге арналған ақылды хабарландыру жүйесі
-  </p>
-
-  <div class="card">
-    <h2>🔔 Жеке хабарлама</h2>
-    <p>Мәліметтеріңізді енгізіңіз</p>
-
-    <label for="name">👩‍🎓 Студенттің аты</label>
-    <input id="name" placeholder="Мысалы: Аружан">
-
-    <label for="date">📅 Сабақ күні</label>
-    <input id="date" type="date">
-
-    <label for="subject">📖 Пән атауы</label>
-    <select id="subject">
-      <option>Информатика</option>
-      <option>Математика</option>
-      <option>Физика</option>
-      <option>Робототехника</option>
-      <option>Бағдарламалау</option>
-    </select>
-
-    <label for="time">🕘 Сабақ уақыты</label>
-    <input id="time" type="time" value="09:00">
-
-    <button id="sendBtn" onclick="showMessage()">
-      🔔 Хабарламаны көрсету
-    </button>
-
-    <div class="result" id="result"></div>
+<section class="card" id="notice">
+  <h2>🔔 Жаңа хабарлама!</h2>
+  <div class="notification">
+    <strong>Құрметті студент!</strong>
+    <p id="message">Хабарлама жүктелуде...</p>
   </div>
-</div>
+  <button onclick="openSchedule()">
+    📅 Сабақ кестесін көру
+  </button>
+</section>
 
-<footer>
-  © 2026 EduSchedule | Serverless Education Project
-</footer>
+<section class="card" id="schedule">
+  <h2>📚 Апталық сабақ кестесі</h2>
+  <p>2026–2027 оқу жылы • Үлгі кесте</p>
+
+  <div class="day">
+    <h3>📅 Дүйсенбі</h3>
+    <div class="lesson">
+      <span class="time">09:00</span>
+      — Информатика
+    </div>
+    <div class="lesson">
+      <span class="time">10:30</span>
+      — Математика
+    </div>
+  </div>
+
+  <div class="day">
+    <h3>📅 Сейсенбі</h3>
+    <div class="lesson">
+      <span class="time">09:00</span>
+      — Бағдарламалау
+    </div>
+    <div class="lesson">
+      <span class="time">11:00</span>
+      — Робототехника
+    </div>
+  </div>
+
+  <div class="day">
+    <h3>📅 Сәрсенбі</h3>
+    <div class="lesson">
+      <span class="time">10:00</span>
+      — Физика
+    </div>
+    <div class="lesson">
+      <span class="time">12:00</span>
+      — Деректер базасы
+    </div>
+  </div>
+
+  <div class="day">
+    <h3>📅 Бейсенбі</h3>
+    <div class="lesson">
+      <span class="time">09:00</span>
+      — Web бағдарламалау
+    </div>
+    <div class="lesson">
+      <span class="time">11:00</span>
+      — Ақпараттық қауіпсіздік
+    </div>
+  </div>
+
+  <div class="day">
+    <h3>📅 Жұма</h3>
+    <div class="lesson">
+      <span class="time">10:00</span>
+      — Жасанды интеллект
+    </div>
+    <div class="lesson">
+      <span class="time">12:00</span>
+      — STEM жобалар
+    </div>
+  </div>
+
+  <button onclick="backToNotice()">
+    ← Хабарламаға оралу
+  </button>
+</section>
+</main>
+
+<footer>© 2026 EduSchedule | Serverless Project</footer>
 
 <script>
-document.getElementById("date").valueAsDate = new Date();
-
-async function showMessage() {
-  const name = document.getElementById("name").value.trim();
-  const date = document.getElementById("date").value;
-  const subject = document.getElementById("subject").value;
-  const time = document.getElementById("time").value;
-  const result = document.getElementById("result");
-  const btn = document.getElementById("sendBtn");
-
-  result.style.display = "block";
-
-  if (!name || !date || !time) {
-    result.textContent = "Барлық өрістерді толтырыңыз!";
-    result.className = "result error";
-    return;
-  }
-
-  btn.disabled = true;
-  btn.textContent = "Жүктелуде...";
-  result.textContent = "Хабарлама дайындалуда...";
-  result.className = "result";
-
-  const params = new URLSearchParams({
-    name: name,
-    date: date.split("-").reverse().join("."),
-    subject: subject,
-    time: time
-  });
-
+async function loadNotification() {
   try {
-    const response = await fetch("/api?" + params.toString());
-
-    if (!response.ok) {
-      throw new Error("Сервер қатесі");
-    }
-
+    const response = await fetch("/api");
+    if (!response.ok) throw new Error("API error");
     const data = await response.json();
-
-    result.textContent = "✅ " + data.message;
+    document.getElementById("message").textContent =
+      "📢 " + data.message +
+      " Жаңа апталық сабақ кестесі дайын!";
   } catch (error) {
-    result.textContent = "Қате шықты. Қайта көріңіз.";
-    result.className = "result error";
-  } finally {
-    btn.disabled = false;
-    btn.textContent = "🔔 Хабарламаны көрсету";
+    document.getElementById("message").textContent =
+      "Жаңа апталық сабақ кестесі дайын!";
   }
 }
+
+function openSchedule() {
+  document.getElementById("notice").style.display = "none";
+  document.getElementById("schedule").style.display = "block";
+}
+
+function backToNotice() {
+  document.getElementById("schedule").style.display = "none";
+  document.getElementById("notice").style.display = "block";
+}
+
+loadNotification();
 </script>
 </body>
 </html>
