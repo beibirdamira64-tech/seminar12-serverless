@@ -19,14 +19,22 @@ class handler(BaseHTTPRequestHandler):
             f"Сабаққа кешікпей келіңіз!"
         )
 
-        result = {
-            "statusCode": 200,
-            "student": name,
-            "date": date,
-            "subject": subject,
-            "time": time,
-            "message": message
-        }
+       
+result = {
+    "student": "Дамира",
+    "date": "21.11.2026",
+    "time": "12:00",
+    "subject": "Бұлттық технология",
+    "room": "310",
+    "message": (
+        "Сәлем, Дамира! "
+        "21.11.2026 күні сағат 12:00-де "
+        "310-кабинетте Бұлттық технология "
+        "сабағы болады. "
+        "Сабақ кестесін көру үшін батырманы басыңыз."
+    )
+}
+
 
         body = json.dumps(
             result, ensure_ascii=False
