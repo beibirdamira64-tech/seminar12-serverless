@@ -3,188 +3,321 @@
 <html lang="kk">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>EduSchedule</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EduSchedule | Дамира</title>
+
 <style>
-* { box-sizing: border-box; }
+* {
+    box-sizing: border-box;
+}
+
 body {
-  margin: 0;
-  font-family: 'Segoe UI', Arial, sans-serif;
-  background: linear-gradient(135deg,#0f172a,#3730a3);
-  color: white;
-  min-height: 100vh;
+    margin: 0;
+    min-height: 100vh;
+    padding: 25px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(135deg, #0f172a, #312e81, #2563eb);
+    color: #1e293b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-main {
-  max-width: 650px;
-  margin: 55px auto;
-  padding: 20px;
+
+.container {
+    width: 100%;
+    max-width: 500px;
 }
-h1 { text-align: center; }
+
+.logo {
+    text-align: center;
+    color: white;
+    font-size: 30px;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
 .subtitle {
-  text-align: center;
-  color: #cbd5e1;
+    color: #cbd5e1;
+    text-align: center;
+    margin-bottom: 30px;
 }
+
 .card {
-  background: white;
-  color: #1e293b;
-  padding: 30px;
-  border-radius: 22px;
-  box-shadow: 0 15px 40px #0004;
-  margin-top: 25px;
+    background: white;
+    padding: 35px;
+    border-radius: 25px;
+    box-shadow: 0 25px 65px rgba(0,0,0,0.25);
+    animation: slideUp 0.5s ease;
 }
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.badge {
+    display: inline-block;
+    background: #eef2ff;
+    color: #4338ca;
+    border-radius: 25px;
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+h1 {
+    font-size: 28px;
+    margin: 22px 0 12px;
+}
+
+.description {
+    color: #64748b;
+    line-height: 1.8;
+}
+
 .notification {
-  background: #eef2ff;
-  border-left: 5px solid #6366f1;
-  padding: 20px;
-  border-radius: 12px;
-  line-height: 1.7;
+    background: #eef2ff;
+    border-left: 5px solid #6366f1;
+    border-radius: 14px;
+    padding: 20px;
+    margin-top: 22px;
+    line-height: 1.8;
 }
+
+.notification h3 {
+    color: #3730a3;
+    margin-top: 0;
+}
+
 button {
-  background: #4f46e5;
-  color: white;
-  border: none;
-  padding: 15px;
-  width: 100%;
-  border-radius: 12px;
-  font-size: 16px;
-  cursor: pointer;
-  margin-top: 20px;
+    display: block;
+    width: 100%;
+    margin-top: 25px;
+    padding: 16px;
+    background: linear-gradient(90deg, #4f46e5, #2563eb);
+    color: white;
+    border: none;
+    border-radius: 13px;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
 }
-button:hover { background: #3730a3; }
-#schedule { display: none; }
-.day {
-  background: #f8fafc;
-  padding: 15px;
-  border-radius: 12px;
-  margin: 15px 0;
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px #4f46e540;
 }
-.lesson {
-  border-bottom: 1px solid #e2e8f0;
-  padding: 12px 0;
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
-.lesson:last-child { border: 0; }
-.time {
-  color: #4f46e5;
-  font-weight: bold;
+
+#schedule {
+    display: none;
 }
+
+.lesson-title {
+    background: linear-gradient(120deg,#4f46e5,#2563eb);
+    border-radius: 16px;
+    padding: 20px;
+    color: white;
+    margin: 22px 0;
+}
+
+.lesson-title h2 {
+    margin: 8px 0;
+}
+
+.info {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 17px 0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.info strong {
+    color: #64748b;
+}
+
+.info span {
+    font-weight: 700;
+    text-align: right;
+}
+
+.room {
+    background: #dcfce7;
+    color: #166534;
+    padding: 6px 12px;
+    border-radius: 9px;
+}
+
+.success {
+    margin-top: 25px;
+    background: #f0fdf4;
+    color: #166534;
+    padding: 16px;
+    border-radius: 12px;
+    text-align: center;
+}
+
 footer {
-  text-align: center;
-  color: #cbd5e1;
-  padding: 25px;
+    text-align: center;
+    color: #cbd5e1;
+    margin-top: 25px;
+    font-size: 13px;
 }
 </style>
 </head>
+
 <body>
-<main>
-<h1>🎓 EduSchedule</h1>
-<p class="subtitle">Студенттердің сабақ кестесі</p>
+<div class="container">
 
-<section class="card" id="notice">
-  <h2>🔔 Жаңа хабарлама!</h2>
-  <div class="notification">
-    <strong>Құрметті студент!</strong>
-    <p id="message">Хабарлама жүктелуде...</p>
-  </div>
-  <button onclick="openSchedule()">
-    📅 Сабақ кестесін көру
-  </button>
-</section>
+    <div class="logo">🎓 EduSchedule</div>
+    <p class="subtitle">
+        Студенттерге арналған ақылды сабақ кестесі
+    </p>
 
-<section class="card" id="schedule">
-  <h2>📚 Апталық сабақ кестесі</h2>
-  <p>2026–2027 оқу жылы • Үлгі кесте</p>
+    <!-- Бірінші экран: хабарлама -->
+    <section class="card" id="notification">
 
-  <div class="day">
-    <h3>📅 Дүйсенбі</h3>
-    <div class="lesson">
-      <span class="time">09:00</span>
-      — Информатика
-    </div>
-    <div class="lesson">
-      <span class="time">10:30</span>
-      — Математика
-    </div>
-  </div>
+        <span class="badge">🔔 ЖАҢА ХАБАРЛАМА</span>
 
-  <div class="day">
-    <h3>📅 Сейсенбі</h3>
-    <div class="lesson">
-      <span class="time">09:00</span>
-      — Бағдарламалау
-    </div>
-    <div class="lesson">
-      <span class="time">11:00</span>
-      — Робототехника
-    </div>
-  </div>
+        <h1>Сәлем, Дамира! 👋</h1>
 
-  <div class="day">
-    <h3>📅 Сәрсенбі</h3>
-    <div class="lesson">
-      <span class="time">10:00</span>
-      — Физика
-    </div>
-    <div class="lesson">
-      <span class="time">12:00</span>
-      — Деректер базасы
-    </div>
-  </div>
+        <p class="description">
+            Сізге сабақ кестесі туралы жаңа
+            хабарлама келді.
+        </p>
 
-  <div class="day">
-    <h3>📅 Бейсенбі</h3>
-    <div class="lesson">
-      <span class="time">09:00</span>
-      — Web бағдарламалау
-    </div>
-    <div class="lesson">
-      <span class="time">11:00</span>
-      — Ақпараттық қауіпсіздік
-    </div>
-  </div>
+        <div class="notification">
+            <h3>📢 Сабақ кестесі дайын!</h3>
+            <p id="message">Хабарлама жүктелуде...</p>
+        </div>
 
-  <div class="day">
-    <h3>📅 Жұма</h3>
-    <div class="lesson">
-      <span class="time">10:00</span>
-      — Жасанды интеллект
-    </div>
-    <div class="lesson">
-      <span class="time">12:00</span>
-      — STEM жобалар
-    </div>
-  </div>
+        <button id="openBtn"
+                onclick="openSchedule()" disabled>
+            📚 Сабақ кестесін көру
+        </button>
+    </section>
 
-  <button onclick="backToNotice()">
-    ← Хабарламаға оралу
-  </button>
-</section>
-</main>
+    <!-- Екінші экран: сабақ кестесі -->
+    <section class="card" id="schedule">
 
-<footer>© 2026 EduSchedule | Serverless Project</footer>
+        <span class="badge">📚 МЕНІҢ САБАҚ КЕСТЕМ</span>
+
+        <h1>Сабақ туралы ақпарат</h1>
+
+        <div class="lesson-title">
+            <small>📖 Пән атауы</small>
+            <h2 id="subject">Бұлттық технология</h2>
+            <span>🎓 EduSchedule</span>
+        </div>
+
+        <div class="info">
+            <strong>👩‍🎓 Студент</strong>
+            <span id="student">Дамира</span>
+        </div>
+
+        <div class="info">
+            <strong>📅 Сабақ күні</strong>
+            <span id="date">21.11.2026</span>
+        </div>
+
+        <div class="info">
+            <strong>🕘 Сабақ уақыты</strong>
+            <span id="time">12:00</span>
+        </div>
+
+        <div class="info">
+            <strong>🚪 Кабинет</strong>
+            <span class="room" id="room">310-кабинет</span>
+        </div>
+
+        <div class="success">
+            ✅ Сабаққа кешікпей келіңіз!
+        </div>
+
+        <button onclick="backToNotice()">
+            ← Хабарламаға қайту
+        </button>
+    </section>
+
+    <footer>
+        © 2026 EduSchedule | Serverless Education Project
+    </footer>
+
+</div>
 
 <script>
+let scheduleLoaded = false;
+
 async function loadNotification() {
-  try {
-    const response = await fetch("/api");
-    if (!response.ok) throw new Error("API error");
-    const data = await response.json();
-    document.getElementById("message").textContent =
-      "📢 " + data.message +
-      " Жаңа апталық сабақ кестесі дайын!";
-  } catch (error) {
-    document.getElementById("message").textContent =
-      "Жаңа апталық сабақ кестесі дайын!";
-  }
+    const message = document.getElementById("message");
+    const button = document.getElementById("openBtn");
+
+    try {
+        const response = await fetch("/api", {
+            cache: "no-store"
+        });
+
+        if (!response.ok) {
+            throw new Error("Сервер қатесі");
+        }
+
+        const data = await response.json();
+
+        message.textContent = data.message;
+
+        document.getElementById("student").textContent =
+            data.student;
+
+        document.getElementById("subject").textContent =
+            data.subject;
+
+        document.getElementById("date").textContent =
+            data.date;
+
+        document.getElementById("time").textContent =
+            data.time;
+
+        document.getElementById("room").textContent =
+            data.room + "-кабинет";
+
+        scheduleLoaded = true;
+        button.disabled = false;
+
+    } catch (error) {
+        message.textContent =
+            "Хабарламаны жүктеу мүмкін болмады. " +
+            "Бетті жаңартып көріңіз.";
+    }
 }
 
 function openSchedule() {
-  document.getElementById("notice").style.display = "none";
-  document.getElementById("schedule").style.display = "block";
+    if (!scheduleLoaded) return;
+
+    document.getElementById("notification").style.display =
+        "none";
+
+    document.getElementById("schedule").style.display =
+        "block";
 }
 
 function backToNotice() {
-  document.getElementById("schedule").style.display = "none";
-  document.getElementById("notice").style.display = "block";
+    document.getElementById("schedule").style.display =
+        "none";
+
+    document.getElementById("notification").style.display =
+        "block";
 }
 
 loadNotification();
