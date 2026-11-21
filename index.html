@@ -1,0 +1,215 @@
+
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EduSchedule | Сабақ кестесі</title>
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: linear-gradient(135deg, #0f172a, #312e81, #2563eb);
+  min-height: 100vh;
+  color: white;
+}
+
+header {
+  padding: 24px 8%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.tag {
+  background: #ffffff20;
+  padding: 10px 17px;
+  border-radius: 25px;
+}
+
+.container {
+  max-width: 550px;
+  margin: 35px auto;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+  font-size: 37px;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  text-align: center;
+  color: #cbd5e1;
+  margin-bottom: 30px;
+}
+
+.card {
+  background: white;
+  color: #1e293b;
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: 0 20px 60px #0004;
+}
+
+label {
+  display: block;
+  margin: 18px 0 8px;
+  font-weight: 600;
+}
+
+input, select {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  font-size: 16px;
+  background: #f8fafc;
+}
+
+button {
+  width: 100%;
+  padding: 16px;
+  margin-top: 25px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #4f46e5, #2563eb);
+  color: white;
+  font-size: 17px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: .9;
+  transform: translateY(-2px);
+}
+
+.result {
+  display: none;
+  margin-top: 22px;
+  background: #eef2ff;
+  border-left: 5px solid #4f46e5;
+  border-radius: 12px;
+  padding: 18px;
+  line-height: 1.7;
+}
+
+.error {
+  color: #b91c1c;
+}
+
+footer {
+  text-align: center;
+  padding: 30px;
+  color: #cbd5e1;
+}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="logo">🎓 EduSchedule</div>
+  <div class="tag">Student Portal</div>
+</header>
+
+<div class="container">
+  <h1>📚 Сабақ кестесі</h1>
+  <p class="subtitle">
+    Студенттерге арналған ақылды хабарландыру жүйесі
+  </p>
+
+  <div class="card">
+    <h2>🔔 Жеке хабарлама</h2>
+    <p>Мәліметтеріңізді енгізіңіз</p>
+
+    <label for="name">👩‍🎓 Студенттің аты</label>
+    <input id="name" placeholder="Мысалы: Аружан">
+
+    <label for="date">📅 Сабақ күні</label>
+    <input id="date" type="date">
+
+    <label for="subject">📖 Пән атауы</label>
+    <select id="subject">
+      <option>Информатика</option>
+      <option>Математика</option>
+      <option>Физика</option>
+      <option>Робототехника</option>
+      <option>Бағдарламалау</option>
+    </select>
+
+    <label for="time">🕘 Сабақ уақыты</label>
+    <input id="time" type="time" value="09:00">
+
+    <button id="sendBtn" onclick="showMessage()">
+      🔔 Хабарламаны көрсету
+    </button>
+
+    <div class="result" id="result"></div>
+  </div>
+</div>
+
+<footer>
+  © 2026 EduSchedule | Serverless Education Project
+</footer>
+
+<script>
+document.getElementById("date").valueAsDate = new Date();
+
+async function showMessage() {
+  const name = document.getElementById("name").value.trim();
+  const date = document.getElementById("date").value;
+  const subject = document.getElementById("subject").value;
+  const time = document.getElementById("time").value;
+  const result = document.getElementById("result");
+  const btn = document.getElementById("sendBtn");
+
+  result.style.display = "block";
+
+  if (!name || !date || !time) {
+    result.textContent = "Барлық өрістерді толтырыңыз!";
+    result.className = "result error";
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = "Жүктелуде...";
+  result.textContent = "Хабарлама дайындалуда...";
+  result.className = "result";
+
+  const params = new URLSearchParams({
+    name: name,
+    date: date.split("-").reverse().join("."),
+    subject: subject,
+    time: time
+  });
+
+  try {
+    const response = await fetch("/api?" + params.toString());
+
+    if (!response.ok) {
+      throw new Error("Сервер қатесі");
+    }
+
+    const data = await response.json();
+
+    result.textContent = "✅ " + data.message;
+  } catch (error) {
+    result.textContent = "Қате шықты. Қайта көріңіз.";
+    result.className = "result error";
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "🔔 Хабарламаны көрсету";
+  }
+}
+</script>
+</body>
+</html>
