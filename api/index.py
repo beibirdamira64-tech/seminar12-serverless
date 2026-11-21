@@ -9,16 +9,22 @@ class handler(BaseHTTPRequestHandler):
 
         name = params.get("name", ["Студент"])[0]
         date = params.get("date", ["25.11.2026"])[0]
+        subject = params.get("subject", ["Информатика"])[0]
+        time = params.get("time", ["09:00"])[0]
 
         message = (
             f"Сәлем, {name}! "
-            f"{date} күні сағат 09:00-де "
-            f"информатика сабағы болады."
+            f"{date} күні сағат {time}-де "
+            f"{subject} сабағы болады. "
+            f"Сабаққа кешікпей келіңіз!"
         )
 
         result = {
+            "statusCode": 200,
             "student": name,
             "date": date,
+            "subject": subject,
+            "time": time,
             "message": message
         }
 
